@@ -4,7 +4,6 @@ export interface appState {
   error?: string
   size?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  currentThem: string
   apiState: number
 }
 
@@ -12,7 +11,6 @@ const initialState: appState = {
   loading: false,
   error: undefined,
   size: undefined,
-  currentThem: 'dark',
   apiState: 200
 }
 

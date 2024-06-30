@@ -42,6 +42,7 @@ export default function UsersPage() {
   const total = usersData?.count || 0
 
   const deleteMutation = useMutation({
+    mutationKey: ['deleteUser'],
     mutationFn: (id: number) => usersAPI.deleteUser(id)
   })
 
