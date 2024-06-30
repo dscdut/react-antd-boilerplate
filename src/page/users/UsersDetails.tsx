@@ -5,11 +5,13 @@ import { useQuery } from '@tanstack/react-query'
 import { Button, Input, Skeleton } from 'antd'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export default function UsersDetails() {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const {
     data: getUserDetail,
@@ -19,7 +21,6 @@ export default function UsersDetails() {
     queryKey: ['usersDetails', id],
     queryFn: () => usersAPI.getUserDetails(id as unknown as number)
   })
-  console.log('getUserDetail:', getUserDetail?.id)
   const [name, setName] = useState(getUserDetail?.name || '')
   const [email, setEmail] = useState(getUserDetail?.email || '')
   const [role, setRole] = useState(getUserDetail?.role.name || '')
@@ -37,6 +38,7 @@ export default function UsersDetails() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     try {
+      setLoading(true)
       const res = await axios.put(
         `${config.baseUrl}/users/${id}/`,
         {
@@ -53,11 +55,13 @@ export default function UsersDetails() {
       )
       if (res.status === HttpStatusCode.Ok) {
         toast.success('User updated successfully')
+        navigate('/users')
         refetch()
       }
     } catch (error) {
       toast.error('An error occurred. Please try again.')
-      console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -133,7 +137,11 @@ export default function UsersDetails() {
           <Link to='/users'>
             <Button className='w-20 mt-10 text-white bg-gray-500 shadow-md hover:bg-blue-500'>Back</Button>
           </Link>
-          <Button className='w-40 mt-10 text-white bg-blue-400 shadow-md hover:bg-blue-500' htmlType='submit'>
+          <Button
+            className='w-40 mt-10 text-white bg-blue-400 shadow-md hover:bg-blue-500'
+            htmlType='submit'
+            loading={loading}
+          >
             Update
           </Button>
         </div>

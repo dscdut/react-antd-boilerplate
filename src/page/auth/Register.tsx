@@ -13,6 +13,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false)
 
   const registerMutation = useMutation({
+    mutationKey: ['register'],
     mutationFn: (data: Account) => authApi.register(data)
   })
 

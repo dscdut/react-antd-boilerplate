@@ -1,5 +1,6 @@
 import { usersAPI } from '@/api/user.api'
 import { AppContext, AppContextType } from '@/contexts/app.context'
+import { IUser, UsersResponse } from '@/interface/users'
 import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { TablePaginationConfig, TableProps } from 'antd'
 import { Button, Input, Popconfirm, Spin, Table, Tag } from 'antd'
@@ -7,31 +8,12 @@ import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
-interface DataType {
-  id: number
-  name: string
-  email: string
-  role: {
-    id: number
-    name: string
-  }
-  created_at: string
-  updated_at: string
-}
-
-interface UsersResponse {
-  count: number
-  next: string | null
-  previous: string | null
-  results: DataType[]
-}
-
 export default function UsersPage() {
   const { setIsAuthenticated } = useContext<AppContextType>(AppContext)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(6)
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredData, setFilteredData] = useState<DataType[]>([])
+  const [filteredData, setFilteredData] = useState<IUser[]>([])
 
   const queryClient = useQueryClient()
 
@@ -44,7 +26,6 @@ export default function UsersPage() {
       })
   })
 
-  console.log('usersData:', usersData)
   useEffect(() => {
     if (usersData) {
       setIsAuthenticated(true)
@@ -55,7 +36,7 @@ export default function UsersPage() {
       )
       setFilteredData(filtered)
     }
-  }, [usersData, searchTerm])
+  }, [usersData, searchTerm, setIsAuthenticated])
 
   const data = filteredData
   const total = usersData?.count || 0
@@ -81,7 +62,7 @@ export default function UsersPage() {
     setPageSize(pagination.pageSize || 6)
   }
 
-  const columns: TableProps<DataType>['columns'] = [
+  const columns: TableProps<IUser>['columns'] = [
     {
       title: 'ID',
       dataIndex: 'id',

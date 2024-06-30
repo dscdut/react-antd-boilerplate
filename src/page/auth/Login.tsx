@@ -17,6 +17,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
 
   const loginMutation = useMutation({
+    mutationKey: ['login'],
     mutationFn: (data: Account) => authApi.login(data)
   })
 
