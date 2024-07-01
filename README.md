@@ -61,8 +61,6 @@ Create a new file named `.env` in the root of your project and add the following
 
 ```env
 VITE_API_URL=YOUR_API_KEY=
-APP_FIREBASE_KEY=
-MESSAGING_SENDER_ID=
 ```
 
 **Running the Project**
@@ -72,6 +70,17 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
+
+### Account:
+
+```bash
+email: admin1@gmail.com
+password: 123456Abc#
+```
+
+## Demo
+
+Link to demo: [https://gdsc-react-boilerpalte-shadcn.vercel.app](https://gdsc-react-boilerpalte-shadcn.vercel.app)
 
 ## <a name="snippets">🕸️ Snippets</a>
 
